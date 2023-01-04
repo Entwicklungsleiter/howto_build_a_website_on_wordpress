@@ -1,4 +1,4 @@
-# DRAFT (I am planning to write this stuff) howto build a website on wordpres
+# DRAFT (I am planning to write this stuff) howto build a website on wordpress
 ## a documentation how I installed wordpress from dockerhub, configured the server and built a website with it
 
 BTW: The website I am talking about is https://www.bicycle-touring-howto.com. Don't want to make a secret about it.
