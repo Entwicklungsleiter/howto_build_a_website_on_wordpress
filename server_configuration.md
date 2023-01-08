@@ -15,3 +15,4 @@ Note: This document is part of the documentation "[Howto build a website on word
 - configure docker-data
 - restart
 - check open ports
+- cron jobs

@@ -6,9 +6,9 @@ BTW: The website I am talking about is [https://www.bicycle-touring-howto.com](h
 
 ## Chapters:
 
-- [setup DNS and webserver hosting](./dns_and_server_hosting.md)
-- [server configuration basics](./server_configuration.md)
-- [setup webserver](./webserver_configuration.md)
+- [setup DNS and webserver hosting](./dns_and_server_hosting.md) (DNS, Hetzner cloud)
+- [server configuration basics](./server_configuration.md) (users, ssh, docker, folder structure, swap, network check)
+- [webserver configuration](./webserver_configuration.md) (letsencrypt, haproxy, wordpress install from dockerhub)
 - wordpress first settings, cleanup default plugins and templates
 - plan the website, install OceanWP and plugins
 - build the website using Elementor (free version)
