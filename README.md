@@ -1,14 +1,17 @@
-# How I built a website on wordpress
+# How to build a website on wordpress
 
-## a documentation how I installed wordpress from dockerhub, configured the server and built a website on it
+## A documentation how I configured the server, installed wordpress and built a website on it
 
-BTW: The website I am talking about is [https://www.bicycle-touring-howto.com](https://www.bicycle-touring-howto.com). I don't want to make a secret about it.
+The website I am talking about is [https://www.bicycle-touring-howto.com](https://www.bicycle-touring-howto.com).
 
-## Chapters:
+## Existing chapters:
 
 - [setup DNS and webserver hosting](./dns_and_server_hosting.md) (DNS, Hetzner cloud)
 - [server configuration basics](./server_configuration.md) (users, ssh, docker, folder structure, swap, network check)
 - [webserver configuration](./webserver_configuration.md) (letsencrypt, haproxy, wordpress install from dockerhub)
+
+## Comming up chapters:
+
 - wordpress first settings, cleanup default plugins and templates
 - plan the website, install OceanWP and plugins
 - build the website using Elementor (free version)
@@ -20,4 +23,4 @@ BTW: The website I am talking about is [https://www.bicycle-touring-howto.com](h
 
 ## Required skills
 
-Actually I am webdeveloper and of course I use this knowledge in this documentation. So less technically experienced people will consider this documentation as "too technical". Please help me to make these docs better by asking questions ... or even better send me a merge request with Your improvements.
+I am web developer (PHP, Python, C#, ...) and of course I use this knowledge in this documentation. So less technically experienced people will consider parts of this documentation being "too technical". Please help me to make the docs better by asking questions ... or sending me merge requests with Your improvements.

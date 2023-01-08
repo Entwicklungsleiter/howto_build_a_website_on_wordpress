@@ -1,6 +1,7 @@
 # Server configuration
 
-Note: This document is part of the documentation "[Howto build a website on wordpress](https://github.com/Entwicklungsleiter/howto_build_a_website_on_wordpress)". You might want to begin from the very start of it.
+Note: This document is part of the documentation "[Howto build a website on wordpress](./README.md)".
+You might want to start from the very beginning of it.
 
 ## Server configuration overview
 
