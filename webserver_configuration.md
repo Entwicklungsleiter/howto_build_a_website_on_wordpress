@@ -9,3 +9,4 @@ You might want to start from the very beginning of it.
 - install and configure HaProxy
 - setup SSL with Letsencrypt
 - local wordpress backup
+- cron jobs
