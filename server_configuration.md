@@ -8,9 +8,9 @@ You might want to start from the very beginning of it.
 I open a shell / terminal / console on my (I also use Linux) PC and connect to the new server via ssh:
 
 ```shell
-ssh root@<my-server-IPv4-address>		# command to login server through ssh
-		# acknowledge question about server fingerprint
-		# the root password will be asked for login
+ssh root@<my-server-IPv4-address>       # command to login server through ssh
+# acknowledge question about server fingerprint
+# the root password will be asked for login
 ```
 
 ### Update & install helpful tools
@@ -18,17 +18,17 @@ ssh root@<my-server-IPv4-address>		# command to login server through ssh
 Then I update the operating system (not knowing how old the hosting providers images are):
 
 ```shell
-apt update && apt upgrade -y	# update package cache and install updates
-apt autoremove --purge			# uninstall dependencies that are not required anymore
+apt update && apt upgrade -y    # update package cache and install updates
+apt autoremove --purge          # uninstall dependencies that are not required anymore
 ```
 
 For the next steps it will be nice to have some tools installed:
 
 ```shell
-apt install nano		# terminal editor to edit files
-apt install tmux		# terminal emulator to split window into multiple shells
-apt install htop		# system ressource viewer like RAM and processes
-apt install net-tools	# network tools to check open ports
+apt install nano        # terminal editor to edit files
+apt install tmux        # terminal emulator to split window into multiple shells
+apt install htop        # system ressource viewer like RAM and processes
+apt install net-tools   # network tools to check open ports
 ```
 
 ### Add another user
@@ -36,23 +36,24 @@ apt install net-tools	# network tools to check open ports
 Working as root on a server I always feel uncomfortable. The user name is known by any attacker. That's why I add a new user:
 
 ```shell
-adduser johndoe				# generate user and home folder /home/johndoe
-		# a password for the new user will be asked twice
-usermod -aG sudo johndoe 	# allow "sudo" for the new user
+adduser johndoe             # generate user and home folder /home/johndoe
+# a password for the new user will be asked twice
+
+usermod -aG sudo johndoe    # allow "sudo" for the new user
 ```
 
 From my home PC I upload my ssh keys for the new user:
 
 ```shell
-ssh-copy-id -i /path/to/my/ssh-key johndoe@<my-server-IPv4-address>	# add ssh key for new user on server
-ssh johndoe@<my-server-IP>											# login with new user on server
-		# now ssh key passphrase (instead of password) will be asked
-```											
+ssh-copy-id -i /path/to/my/ssh-key johndoe@<my-server-IPv4-address> # add ssh key for new user on server
+ssh johndoe@<my-server-IP>                                          # login with new user on server
+# now ssh key passphrase (instead of password) will be asked
+```                                         
 
 and on the server I try "sudo" with new user:
 
 ```shell
-sudo su		# become "root"
+sudo su     # become "root"
 ```
 
 ### Configure ssh
@@ -63,7 +64,7 @@ Now I can disable ssh access for user root:
 sudo nano /etc/ssh/sshd_config
 # replace PermitRootLogin yes with no
 # CTRL+o to save and CTRL+x to end
-# takes effect after reboot (see below)
+# takes effect after reboot (I'll do later)
 ```
 
 I also run my ssh server on a custom port. In my /var/log/auth.log I discovered bots stop trying to login after that change:
@@ -72,7 +73,7 @@ I also run my ssh server on a custom port. In my /var/log/auth.log I discovered 
 sudo nano /etc/ssh/sshd_config
 # replace "Port 22" with Your custom port
 # CTRL+o to save and CTRL+x to end
-# takes effect after reboot (see below)
+# takes effect after reboot (I'll do later)
 ```
 
 ### Add swap
@@ -81,14 +82,14 @@ A servers memory / RAM is limited. As I mentioned earlier my server only has 2GB
 
 ```shell
 sudo su
-touch /var/swap.1											# create a swap file
-dd if=/dev/zero of=/var/swap.1 bs=1MiB count=$((1*5120))	# fill file with 5GB zeros
-chmod 600 /var/swap.1										# only root may handle memory
-mkswap /var/swap.1											# make swap filesystem
-swapon /var/swap.1											# activate swap for now
-echo "/var/swap.1 none swap defaults 0 0" >> /etc/fstab		# activate swap after reboot
-swapon --show												# will show /var/swap.1 file   5G 0M   -2
-htop														# will show Swp[|               0M/5.00G]
+touch /var/swap.1                                           # create a swap file
+dd if=/dev/zero of=/var/swap.1 bs=1MiB count=$((1*5120))    # fill file with 5GB zeros
+chmod 600 /var/swap.1                                       # only root may handle memory
+mkswap /var/swap.1                                          # make swap filesystem
+swapon /var/swap.1                                          # activate swap for now
+echo "/var/swap.1 none swap defaults 0 0" >> /etc/fstab     # activate swap after reboot
+swapon --show                                               # will show /var/swap.1 file   5G 0M   -2
+htop                                                        # will show Swp[|               0M/5.00G]
 ```
 
 ## Reboot and check
@@ -105,23 +106,21 @@ and see if:
 - ssh will be available at the new port
 
 ```shell
-ssh johndoe@<my-servers-IPv4-address> -p <my-custom-port>	# should work
+ssh johndoe@<my-servers-IPv4-address> -p <my-custom-port>  # should work
 ```
 
 - check if ssh login as root is blocked
 
 ```shell
-ssh root@<my-servers-IPv4-address> -p <my-custom-port> 		# should not work
+ssh root@<my-servers-IPv4-address> -p <my-custom-port>     # should not work
 ```
 
 - the swap is again enabled (swapon --show or htop)
 - the volume (40GB that I booked at webhoster) is mounted
 
 ```shell
-cat /etc/fstab | grep -i volume		
-		# some (non-empty) output like: /dev/disk/by-id/scsi-0HC_Volume_1234567 /mnt/volume-fsn1-1 ext4 ...
-mount | grep -i volume
-		# some (non-empty) output like: /dev/sdb on /mnt/volume-fsn1-1 type ext4 (rw,relatime,discard)
+cat /etc/fstab | grep -i volume   # non-empty output like: /dev/disk/by-id/scsi-0HC_Volume_1234567 ...
+mount | grep -i volume            # non-empty output like: /dev/sdb on /mnt/volume-fsn1-1 type...
 ```
 Notice: You see my volume is mounted to /mnt/volume-fsn1-1. That is important, because all my future work will be done here!
 
@@ -158,11 +157,14 @@ nano /etc/docker/daemon.json
 # {
 #    "data-root": "/mnt/volume-fsn1-1/docker_data"
 # }
-systemctl stop docker											# stop all docker stuff
-rsync -axPS /var/lib/docker/ /mnt/volume-fsn1-1/docker_data		# mv existing data to new folder
-systemctl daemon-reload											# make config file known
-systemctl start docker											# start docker again
-docker info | grep "Root Dir"									# should show Your root dir now
+systemctl stop docker                                           # stop all docker stuff
+rsync -axPS /var/lib/docker/ /mnt/volume-fsn1-1/docker_data     # mv existing data to new folder
+systemctl daemon-reload                                         # make config file known
+systemctl start docker                                          # start docker again
+docker info | grep "Root Dir"                                   # should show Your root dir now
 ```
 
 For detailled help see [this article](https://stackoverflow.com/questions/55344896/attempt-to-change-docker-data-root-fails-why).
+
+
+Well, thats the basic server configuration. See [next chapter](./webserver_configuration.md) how I configured webserver related stuff.
