@@ -53,7 +53,7 @@ ssh johndoe@<my-server-IP>                                          # login with
 and on the server I try "sudo" with new user:
 
 ```shell
-sudo su     # become "root"
+sudo su     # become "root" without any error output
 ```
 
 ### Configure ssh

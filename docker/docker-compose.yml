@@ -1,0 +1,73 @@
+version: '2'
+
+# name of my website: mywordpresswebsite
+# shortcut: mww
+
+services:
+  haproxy:
+    container_name: haproxy
+    build:
+      context: .
+      dockerfile: ./haproxy/Dockerfile
+    restart: always
+    volumes:
+      - ../etc/letsencrypt:/etc/letsencrypt
+      - /etc/ssl:/etc/ssl
+    ports:
+      - "80:80"
+      - "443:443"
+
+  mww-app:
+    image: wordpress
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: mww-db
+      WORDPRESS_DB_USER: mywordpresswebsite
+      WORDPRESS_DB_PASSWORD: chieNg0oaquees5PoK9d
+      WORDPRESS_DB_NAME: mywordpresswebsite
+    volumes:
+      - ../mywordpresswebsite/app:/var/www/html
+      - ./mywordpresswebsite/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+
+  mww-db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: mywordpresswebsite
+      MYSQL_USER: mywordpresswebsite
+      MYSQL_PASSWORD: chieNg0oaquees5PoK9d
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - ../mywordpresswebsite/db:/var/lib/mysql
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    restart: always
+    entrypoint: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+    volumes:
+      - ../mywordpresswebsite/cache:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
+  matomo-app:
+    image: matomo:latest
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: matomo-db
+      WORDPRESS_DB_USER: matomo
+      WORDPRESS_DB_PASSWORD: chieNg0oaquees5PoK9d
+      WORDPRESS_DB_NAME: matomo
+    volumes:
+      - ../matomo/app:/var/www/html
+
+  matomo-db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: matomo
+      MYSQL_USER: matomo
+      MYSQL_PASSWORD: chieNg0oaquees5PoK9d
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - ../matomo/db:/var/lib/mysql
