@@ -8,7 +8,7 @@ services:
     container_name: haproxy
     build:
       context: .
-      dockerfile: ./haproxy/Dockerfile
+      dockerfile: ../haproxy/Dockerfile
     restart: always
     volumes:
       - ../etc/letsencrypt:/etc/letsencrypt
@@ -23,6 +23,7 @@ services:
     environment:
       WORDPRESS_DB_HOST: mww-db
       WORDPRESS_DB_USER: mywordpresswebsite
+#     please set Your individual password here
       WORDPRESS_DB_PASSWORD: chieNg0oaquees5PoK9d
       WORDPRESS_DB_NAME: mywordpresswebsite
     volumes:
@@ -35,6 +36,7 @@ services:
     environment:
       MYSQL_DATABASE: mywordpresswebsite
       MYSQL_USER: mywordpresswebsite
+#     please set the same individual password here
       MYSQL_PASSWORD: chieNg0oaquees5PoK9d
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
     volumes:
@@ -56,6 +58,7 @@ services:
     environment:
       WORDPRESS_DB_HOST: matomo-db
       WORDPRESS_DB_USER: matomo
+#     please set another individual password2 here
       WORDPRESS_DB_PASSWORD: chieNg0oaquees5PoK9d
       WORDPRESS_DB_NAME: matomo
     volumes:
@@ -67,6 +70,7 @@ services:
     environment:
       MYSQL_DATABASE: matomo
       MYSQL_USER: matomo
+#     please set the same individual password2 here
       MYSQL_PASSWORD: chieNg0oaquees5PoK9d
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
     volumes:
