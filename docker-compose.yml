@@ -4,19 +4,23 @@ version: '2'
 # shortcut: mww
 
 services:
+  # reverse proxy server
   haproxy:
     container_name: haproxy
     build:
       context: .
-      dockerfile: ../haproxy/Dockerfile
+      dockerfile: ./haproxy/Dockerfile
     restart: always
     volumes:
-      - ../etc/letsencrypt:/etc/letsencrypt
-      - /etc/ssl:/etc/ssl
+      - "./letsencrypt:/etc/letsencrypt"
+      - "/etc/ssl:/etc/ssl"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
     ports:
       - "80:80"
       - "443:443"
 
+  # wordpress application container
   mww-app:
     image: wordpress
     restart: always
@@ -27,9 +31,12 @@ services:
       WORDPRESS_DB_PASSWORD: chieNg0oaquees5PoK9d
       WORDPRESS_DB_NAME: mywordpresswebsite
     volumes:
-      - ../mywordpresswebsite/app:/var/www/html
-      - ./mywordpresswebsite/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - "./mywordpresswebsite/app:/var/www/html"
+      - "./mywordpresswebsite/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
 
+  # wordpress SQL database
   mww-db:
     image: mysql:5.7
     restart: always
@@ -40,18 +47,22 @@ services:
       MYSQL_PASSWORD: chieNg0oaquees5PoK9d
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
     volumes:
-      - ../mywordpresswebsite/db:/var/lib/mysql
+      - "./mywordpresswebsite/db:/var/lib/mysql"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
 
+  # wordpress caching server
   redis:
     container_name: redis
     image: redis:latest
     restart: always
     entrypoint: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
     volumes:
-      - ../mywordpresswebsite/cache:/data
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
+      - "./mywordpresswebsite/cache:/data"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
 
+  # matomo analytics service
   matomo-app:
     image: matomo:latest
     restart: always
@@ -62,8 +73,11 @@ services:
       WORDPRESS_DB_PASSWORD: chieNg0oaquees5PoK9d
       WORDPRESS_DB_NAME: matomo
     volumes:
-      - ../matomo/app:/var/www/html
+      - "./matomo/app:/var/www/html"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
 
+  # SQL database for matomo analytics
   matomo-db:
     image: mysql:5.7
     restart: always
@@ -74,4 +88,6 @@ services:
       MYSQL_PASSWORD: chieNg0oaquees5PoK9d
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
     volumes:
-      - ../matomo/db:/var/lib/mysql
+      - "./matomo/db:/var/lib/mysql"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"

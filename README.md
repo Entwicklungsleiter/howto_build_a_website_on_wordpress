@@ -6,9 +6,9 @@ The website I am talking about is [https://www.bicycle-touring-howto.com](https:
 
 ## Existing chapters:
 
-- [setup DNS and webserver hosting](./dns_and_server_hosting.md) (DNS, Hetzner cloud)
-- [server configuration basics](./server_configuration.md) (users, ssh, docker, folder structure, swap, network check)
-- [webserver configuration](./webserver_configuration.md) (letsencrypt, haproxy, wordpress install from dockerhub)
+- [setup DNS and webserver hosting](./docs/01_dns_and_server_hosting.md) (domain, DNS, cloud server)
+- [server configuration basics](./docs/02_server_configuration.md) (users, ssh, docker, folder structure, swap, network check)
+- [webserver configuration](./docs/03_webserver_configuration.md) (letsencrypt, haproxy, wordpress install from dockerhub)
 
 ## Comming up chapters:
 

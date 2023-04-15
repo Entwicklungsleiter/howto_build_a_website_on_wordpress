@@ -1,6 +1,6 @@
 # Server configuration
 
-Note: This document is part of the documentation "[Howto build a website on wordpress](./README.md)".
+Note: This document is part of the documentation "[Howto build a website on wordpress](../README.md)".
 You might want to start from the very beginning of it.
 
 ## Basic server configuration
@@ -92,6 +92,21 @@ swapon --show                                               # will show /var/swa
 htop                                                        # will show Swp[|               0M/5.00G]
 ```
 
+### set timezone
+
+To avoid fighting against wrong timestamps in different services, it is really helpful to set the servers time zone properly and (through docker-compose.yml) inject this into all docker containers. To check and (if required) set time zone on the server these commands are helpful:
+
+```shell
+# check servers current time
+date
+# check if current server timezone is set to Your location
+timedatectl
+# check availabe timezones
+timedatectl list-timezones
+# run process to set another time zone
+sudo dpkg-reconfigure tzdata
+```
+
 ## Reboot and check
 
 After these changes it makes sense to reboot:
@@ -138,10 +153,12 @@ sudo netstat -tulpen
 ```
 Notice: You see only "internal stuff" and my custom ssh port 12345 are open
 
+- the time and time zone is set well (command: date)
+
 
 ## Install docker & docker-compose
 
-Through the internet are many descriptions, how docker can be installed from dockers own software repository. Since I work with docker from Ubuntu repos I never had problems and so install it the easy way:
+Through the internet are many descriptions, how docker can be installed from dockers official software repository. Since I work with docker from Ubuntu repos I never had problems and so install it the easy way:
 
 ```shell
 sudo apt install docker.io docker-compose
