@@ -59,3 +59,5 @@ Now I do these final steps before entering the server and do all the configurati
 df -h
 ```
 - In the Hetzner servers overview page I find the IPv4 and IPv6 adresses of the new server. So I can go back to DNS hosting and add A record (IPv4) and AAAA (for IPv6) there.
+
+Well, now we have an URL / domain and a server. See [next chapter](./02_server_configuration.md) how I configured the server to be a server, docker host and available via ssh.

@@ -32,9 +32,20 @@ git clone https://github.com/Entwicklungsleiter/howto_build_a_website_on_wordpre
 cd docker
 docker-compose up --build -d         # start all containers in docker-compose file
 docker-compose ps                    # check containers are running and non is endless restarting
-docker-compose logs <containername>  # get more information if container is not "up"
+docker-compose logs <containername>  # get more information if a container is not "up"
 ```
 
 ## generate SSL certificate with letsencrypt
 
-## first call docker
+In the early days of the web we had to buy "SSL certificates" signed by "certificate authorities" to make our websites available using https. The certificates of these important companies (aka "root certificates") were integrated in and accepted by all major webbrowsers. A website was connsidered being "safe through https" of one of these authorities signed Your websites SSL certificate.
+Today this process is still driving https traffic. But today there is one more independent certificate authority integrated into all major webbrowsers, letsencrypt. To create Your own https certificate and get it signed by them, You need to follow these steps:
+
+The commandline software to work with letsencrypt is easy to install from Ubuntu package repository:
+```shell
+sudo apt install certbot
+```
+
+- test if a first website is available already via browser
+- run certbot manually for all domains
+- add certificate to haproxy configuration
+- restart haproxy
